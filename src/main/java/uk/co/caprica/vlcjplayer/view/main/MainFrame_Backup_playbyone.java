@@ -49,7 +49,7 @@ import static uk.co.caprica.vlcjplayer.Application.resources;
 import static uk.co.caprica.vlcjplayer.view.action.Resource.resource;
 
 @SuppressWarnings("serial")
-public final class MainFrame extends BaseFrame {
+public final class MainFrame_Backup_playbyone extends BaseFrame {
 
     private static final String ACTION_EXIT_FULLSCREEN = "exit-fullscreen";
 
@@ -57,8 +57,7 @@ public final class MainFrame extends BaseFrame {
 
     private static final KeyStroke KEYSTROKE_TOGGLE_FULLSCREEN = KeyStroke.getKeyStroke("F11");
 
-    private EmbeddedMediaPlayerComponent mediaPlayerComponent;
-    EmbeddedMediaListPlayerComponent mediaListPlayerComponent;
+    private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
 
     private final Action mediaOpenAction;
     private final Action mediaQuitAction;
@@ -120,11 +119,10 @@ public final class MainFrame extends BaseFrame {
 
     private final MouseMovementDetector mouseMovementDetector;
 
-    public MainFrame(EmbeddedMediaListPlayerComponent mediaListPlayerComponent) {
+    public MainFrame_Backup_playbyone() {
         super("专用播放器");
 
         this.mediaPlayerComponent = application().mediaPlayerComponent();
-        this.mediaListPlayerComponent = mediaListPlayerComponent;
 
         MediaPlayerActions mediaPlayerActions = application().mediaPlayerActions();
 
@@ -132,7 +130,7 @@ public final class MainFrame extends BaseFrame {
         mediaOpenAction = new StandardAction(resource("menu.media.item.openFile")) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(MainFrame.this)) {
+                if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(MainFrame_Backup_playbyone.this)) {
                     File file = fileChooser.getSelectedFile();
                     String mrl = file.getAbsolutePath();
                     application().addRecentMedia(mrl);
@@ -188,7 +186,7 @@ public final class MainFrame extends BaseFrame {
         subtitleAddSubtitleFileAction = new StandardAction(resource("menu.subtitle.item.addSubtitleFile")) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(MainFrame.this)) {
+                if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(MainFrame_Backup_playbyone.this)) {
                     File file = fileChooser.getSelectedFile();
                     mediaPlayerComponent.getMediaPlayer().setSubTitleFile(file);
                 }
@@ -237,8 +235,8 @@ public final class MainFrame extends BaseFrame {
                 bottomPane.revalidate();
                 bottomPane.getParent().invalidate();
                 bottomPane.getParent().revalidate();
-                MainFrame.this.invalidate();
-                MainFrame.this.revalidate();
+                MainFrame_Backup_playbyone.this.invalidate();
+                MainFrame_Backup_playbyone.this.revalidate();
             }
         };
 
@@ -246,8 +244,8 @@ public final class MainFrame extends BaseFrame {
         helpAboutAction = new StandardAction(resource("menu.help.item.about")) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AboutDialog dialog = new AboutDialog(MainFrame.this);
-                dialog.setLocationRelativeTo(MainFrame.this);
+                AboutDialog dialog = new AboutDialog(MainFrame_Backup_playbyone.this);
+                dialog.setLocationRelativeTo(MainFrame_Backup_playbyone.this);
 
                 dialog.setVisible(true);
             }
@@ -462,7 +460,7 @@ public final class MainFrame extends BaseFrame {
                 videoContentPane.showDefault();
                 mouseMovementDetector.stop();
                 application().post(StoppedEvent.INSTANCE);
-                JOptionPane.showMessageDialog(MainFrame.this, MessageFormat.format(resources().getString("error.errorEncountered"), fileChooser.getSelectedFile().toString()), resources().getString("dialog.errorEncountered"), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(MainFrame_Backup_playbyone.this, MessageFormat.format(resources().getString("error.errorEncountered"), fileChooser.getSelectedFile().toString()), resources().getString("dialog.errorEncountered"), JOptionPane.ERROR_MESSAGE);
             }
 
             @Override
@@ -512,43 +510,45 @@ public final class MainFrame extends BaseFrame {
         mouseMovementDetector = new VideoMouseMovementDetector(mediaPlayerComponent.getVideoSurface(), 500, mediaPlayerComponent);
 
         setMinimumSize(new Dimension(370, 240));
-        setVisible(true);
 
-        playByList();
-        //playByOne();
+        //playByList();
+        loadMedia();
+        playByOne();
+
+
+        MediaListPlayerMode.valueOf("LOOP");
+
+
+
+
+
     }
 
     private void playByList() {
-        //setContentPane(mediaListPlayerComponent); //主播放区域已设置，且列表播放模式调用了单播放模式的播放器，去掉此行
+        EmbeddedMediaListPlayerComponent mediaListPlayerComponent;
+        mediaListPlayerComponent = new EmbeddedMediaListPlayerComponent();
+        mediaListPlayerComponent.getMediaList().addMedia("d:\\428900\\Desktop\\video\\dshn.avi");
+        mediaListPlayerComponent.getMediaList().addMedia("d:\\428900\\Desktop\\video\\snsd.mp4");
 
-        // 加载资源
-        loadVideo();
-
-        // 设置参数: 自动全屏功能在 MainPlayer.java start 中实现
-        mediaListPlayerComponent.getMediaListPlayer().setMediaPlayer(mediaPlayerComponent.getMediaPlayer());
-        mediaListPlayerComponent.getMediaListPlayer().setMode(MediaListPlayerMode.LOOP);
+        setContentPane(mediaListPlayerComponent);
+        setVisible(true);
         mediaListPlayerComponent.getMediaListPlayer().play();
     }
 
+    private void loadMedia() {
+        //MediaList mediaList = new MediaList(libvlc_media_t, LibVlc.INSTANCE);
+        //DefaultMediaListPlayer mediaListPlayer = new DefaultMediaListPlayer();
+    }
+
     private void playByOne() {
+        setVisible(true);
         mediaPlayerComponent.getMediaPlayer().playMedia("D:\\428900\\Desktop\\video\\snsd.mp4");
+
+        System.out.println("getSubItemMediaMeta :" + mediaPlayerComponent.getMediaPlayer().getSubItemMediaMeta());
+
     }
 
-    private void loadVideo() {
-        String currDir = System.getProperty("user.dir");
 
-        String videoDirStr = currDir + "/" + resource("video.dir").name();
-        File videoDir = new File(videoDirStr);
-        String[] children = videoDir.list();
-        if (children == null) {
-            System.out.println("目录不存在?:" + videoDirStr);
-        } else {
-            for (String fileName : children){
-                String abstractVideoFilePath = videoDirStr + "/" + fileName;
-                mediaListPlayerComponent.getMediaList().addMedia(abstractVideoFilePath);
-            }
-        }
-    }
 
     private ButtonGroup addActions(List<Action> actions, JMenu menu, boolean selectFirst) {
         ButtonGroup buttonGroup = addActions(actions, menu);
@@ -574,7 +574,7 @@ public final class MainFrame extends BaseFrame {
 
 
     private void applyPreferences() {
-        Preferences prefs = Preferences.userNodeForPackage(MainFrame.class);
+        Preferences prefs = Preferences.userNodeForPackage(MainFrame_Backup_playbyone.class);
         setBounds(
             prefs.getInt("frameX"     , 100),
             prefs.getInt("frameY"     , 100),
@@ -604,7 +604,7 @@ public final class MainFrame extends BaseFrame {
     @Override
     protected void onShutdown() {
         if (wasShown()) {
-            Preferences prefs = Preferences.userNodeForPackage(MainFrame.class);
+            Preferences prefs = Preferences.userNodeForPackage(MainFrame_Backup_playbyone.class);
             prefs.putInt    ("frameX"          , getX     ());
             prefs.putInt    ("frameY"          , getY     ());
             prefs.putInt    ("frameWidth"      , getWidth ());
