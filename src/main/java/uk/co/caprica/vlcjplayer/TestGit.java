@@ -10,5 +10,8 @@ public class TestGit {
         System.out.println("增加一行BY GIT, After delete id_rsa");
         System.out.println("增加一行BY GIT, After restart");
 
+        System.out.println("增加一行BY GIT, DevBranch");
+        System.out.println("增加一行BY GIT, Delete SSH KEY On Github");
+
     }
 }
