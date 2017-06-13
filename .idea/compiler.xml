@@ -8,11 +8,13 @@
         <outputRelativeToContentRoot value="true" />
         <module name="vlcj-player" />
         <module name="vlcj-player5" />
+        <module name="vlcj-player7" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="vlcj-player" target="1.8" />
       <module name="vlcj-player5" target="1.8" />
+      <module name="vlcj-player7" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
