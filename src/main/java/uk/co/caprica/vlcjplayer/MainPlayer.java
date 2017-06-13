@@ -214,8 +214,11 @@ public class MainPlayer {
         System.out.println("这里是被 Lambda 转换过的分支里面的数据");
         System.out.println("这里是被 Lambda 转换过的分支里面的数据");
         System.out.println("这里是被 Lambda 转换过的分支里面的数据");
+        System.out.println("这里是被 Lambda 转换过的分支里面的数据");
+        System.out.println("这里是被 Lambda 转换过的分支里面的数据");
+        System.out.println("这里是被 测试 SSH 提交数据 ");
 
-        
+
 
     }
 
