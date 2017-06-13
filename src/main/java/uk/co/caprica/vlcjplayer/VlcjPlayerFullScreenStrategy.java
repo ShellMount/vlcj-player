@@ -23,4 +23,13 @@ final class VlcjPlayerFullScreenStrategy extends DefaultAdaptiveRuntimeFullScree
     protected  void afterExitFullScreen() {
         application().post(AfterExitFullScreenEvent.INSTANCE);
     }
+
+    /**
+     * Created by ShellMount on 2017/6/13.
+     */
+    public static class TestGit {
+        public static void main(String[] args) {
+            System.out.println("在GIT的模式下，是否能够上传？");
+        }
+    }
 }
