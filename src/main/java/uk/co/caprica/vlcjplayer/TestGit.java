@@ -7,5 +7,7 @@ public class TestGit {
     public static void main(String[] args) {
         System.out.println("再次传一下TESTGIT");
         System.out.println("增加一行BY GIT");
+        System.out.println("增加一行BY GIT, After delete id_rsa");
+
     }
 }
