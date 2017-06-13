@@ -13,5 +13,8 @@ public class TestGit {
         System.out.println("增加一行BY GIT, DevBranch");
         System.out.println("增加一行BY GIT, Delete SSH KEY On Github");
 
+
+        System.out.println("增加一行BY GIT, DevBranch");
+        System.out.println("增加一行BY GIT, 不要SSH KEY也能上传成功");
     }
 }
