@@ -209,6 +209,8 @@ public class MainPlayer {
         SwingUtilities.invokeLater(
                 () -> new MainPlayer().start()
         );
+
+        System.out.println("这里是被 Lambda 转换过的分支里面的数据");
     }
-    
+
 }
