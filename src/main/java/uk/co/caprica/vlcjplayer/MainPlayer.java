@@ -86,13 +86,13 @@ public class MainPlayer {
 
     private static EmbeddedMediaPlayerComponent mediaPlayerComponent;
 
-    static EmbeddedMediaListPlayerComponent mediaListPlayerComponent;
+    private static EmbeddedMediaListPlayerComponent mediaListPlayerComponent;
 
 
     /**
      * 构造类: 播放相关内容
      */
-    public MainPlayer() {
+    private MainPlayer() {
         mediaListPlayerComponent = new EmbeddedMediaListPlayerComponent();
 
         mediaPlayerComponent = application().mediaPlayerComponent();
@@ -136,10 +136,11 @@ public class MainPlayer {
 
 
     //----------------------------------------------------------
+
     /**
-     * MAIN区域
-     * @param args
-     * @throws InterruptedException
+     * 入口
+     * @param args : 无参数
+     * @throws : InterruptedException
      */
     public static void main(String[] args) throws InterruptedException {
         // This will locate LibVLC for the vast majority of cases
@@ -194,12 +195,22 @@ public class MainPlayer {
     /**
      * 主播放器启动线程
      */
-    private static void mainPlayThread() {
+    /*private static void mainPlayThread() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 new MainPlayer().start();
             }
         });
+    }*/
+
+    // lambda 替换 上面的函数面目全非呀？
+    private static void mainPlayThread() {
+        SwingUtilities.invokeLater(
+                () -> new MainPlayer().start()
+        );
     }
+
+
+
 }
